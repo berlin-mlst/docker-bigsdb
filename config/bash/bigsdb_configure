@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# set rights for /var/www
+chown www-data:www-data -R /var/www
+
+# apache config: disable default site configs
+# a2dissite 000-default # <- this line is necessary, if 000-default.conf is not present in /etc/apache2/sites-available/
+# other defaults
+for i in $(ls /etc/apache2/sites-available/*default*); do
+   default_confx=$(basename $i)
+   a2dissite ${default_confx%.conf}
+done
+
+# apache config: enable all other
+for i in $(ls /etc/apache2/sites-available/ -I "*default*"); do
+   site_confx=$(basename $i)
+   a2ensite ${site_confx%.conf}
+done
+
+# apache2: enable cgi
+a2enmod cgi
+
+# start apache2
+apache2ctl -DFOREGROUND
