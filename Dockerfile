@@ -55,15 +55,19 @@ RUN tar -xvf v_1.18.3.tar.gz; \
    cp -r BIGSdb-v_1.18.3/conf /etc/; \
    mv /etc/conf /etc/bigsdb
 
-# copy installation script
-COPY config/bash/bigsdb_configure /usr/bin/
-RUN chmod a+x /usr/bin/bigsdb_configure
+# import initialisation scripts
+COPY config/bash/bigsdb_* /usr/bin/
+RUN chmod a+x /usr/bin/bigsdb_*
+
+# import bigsdb configuration files into /etc/bigsdb
+COPY config/bigsdb/conf/*.conf /etc/bigsdb/
+
+# import postgres configuration 
+WORKDIR /setup/postgres
+COPY config/postgres/*.conf /setup/postgres/ 
 
 # copy apache2 site-config (this config. is automatically enabled by bigsdb_configure below)
 COPY config/apache2/apache2_bigsdb.conf /etc/apache2/sites-available/
-
-# change rights of /var/log
-RUN chmod a+w /var/log
 
 # Initialise container and start apache2
 CMD ["bigsdb_configure"]
