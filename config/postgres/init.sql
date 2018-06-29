@@ -1,0 +1,4 @@
+CREATE USER futloch;
+ALTER ROLE futloch WITH PASSWORD 'hure';
+CREATE DATABASE futkind;
+GRANT ALL PRIVILEGES ON DATABASE futkind to futloch;
