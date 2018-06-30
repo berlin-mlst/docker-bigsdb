@@ -62,11 +62,7 @@ RUN chmod a+x /usr/bin/bigsdb_*
 # import bigsdb configuration files into /etc/bigsdb
 COPY config/bigsdb/conf/*.conf /etc/bigsdb/
 
-# import postgres configuration 
-WORKDIR /setup/postgres
-COPY config/postgres/*.conf /setup/postgres/ 
-
-# copy apache2 site-config (this config. is automatically enabled by bigsdb_configure below)
+# copy apache2 site-config (this config file is automatically enabled by bigsdb_configure below)
 COPY config/apache2/apache2_bigsdb.conf /etc/apache2/sites-available/
 
 # Initialise container and start apache2

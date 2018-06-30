@@ -5,6 +5,10 @@ export BIGS_ENVIRONMENT=/setup/bigsdb.env
 mkdir -p /setup/environment
 set | grep '^BIGS_\|^POSTGRES_' > ${BIGS_ENVIRONMENT} 
 
+# create log file and set permissions
+touch /var/log/bigsdb.log
+chown www-data /var/log/bigsdb.log
+
 # set rights and permissions of directories
 chown www-data:www-data -R /var/www
 chmod a+w /var/log
@@ -23,8 +27,11 @@ for i in $(ls /etc/apache2/sites-available/ -I "*default*"); do
    a2ensite ${site_confx%.conf}
 done
 
+# ToDo: create user bigsdb
+useradd -s /bin/bash bigsdb
+
 # apache2: enable cgi
 a2enmod cgi
 
-# start apache2
+# start apache2 (as bigsdb)?
 apache2ctl -DFOREGROUND
