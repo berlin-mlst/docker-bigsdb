@@ -8,8 +8,9 @@ RUN apt-get -y update && apt-get install -y \
    build-essential \
    cron \
    curl \
-   emboss \
+   emboss \ 
    exonerate \
+   iputils-ping \
    less \
    libapache2-mod-perl2 \
    ncbi-blast+ \
@@ -46,7 +47,11 @@ RUN ./splitstree4_unix_4_14_6.sh < install.txt
 RUN wget https://github.com/kjolley/BIGSdb/archive/v_1.18.3.tar.gz
 RUN tar -xvf v_1.18.3.tar.gz; \
    mkdir /var/www/cgi-bin; \
-   cp BIGSdb-v_1.18.3/bigs*.pl /var/www/cgi-bin; \
+   cp BIGSdb-v_1.18.3/bigsdb.pl /var/www/cgi-bin; \
+   cp BIGSdb-v_1.18.3/bigscurate.pl /var/www/cgi-bin; \
+   cp BIGSdb-v_1.18.3/bigsrest.pl /var/www/cgi-bin; \
+   cp BIGSdb-v_1.18.3/bigsjobs.pl /usr/local/bin; \
+   ln -s /usr/local/bin/bigsjobs.pl /usr/local/bin/bigsjobs; \
    cp -r BIGSdb-v_1.18.3/lib/BIGSdb /usr/local/lib/; \
    cp -r BIGSdb-v_1.18.3/javascript /var/www/html/; \
    cp -r BIGSdb-v_1.18.3/css /var/www/html/; \

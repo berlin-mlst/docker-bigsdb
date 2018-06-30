@@ -30,6 +30,23 @@ done
 # ToDo: create user bigsdb
 useradd -s /bin/bash bigsdb
 
+# crontab
+echo -e "* * * * *\tbigsdb\txvfb-run -a /usr/local/bin/bigsjobs" >> /etc/crontab
+
+# jobs logs
+touch /var/log/bigsdb_jobs.log
+chown bigsdb /var/log/bigsdb_jobs.log
+
+# modify users
+usermod -a -G www-data bigsdb
+usermod -a -G bigsdb www-data
+
+# submissions
+touch /var/submissions
+chown www-data:www-data /var/submissions
+chmod 775 /var/submissions
+ln -s /var/submissions /var/www
+
 # apache2: enable cgi
 a2enmod cgi
 

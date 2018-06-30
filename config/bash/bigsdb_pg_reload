@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# load environment variables 
-source <(sed -r -n 's/[^#]+/export &/ p' /setup/*.env)
-
-# reload
-PGPASSWORD=$POSTGRES_PASSWORD psql -h db -U $POSTGRES_USER -c 'SELECT pg_reload_conf();'
-
-

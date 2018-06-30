@@ -20,6 +20,8 @@ createdb -U "$POSTGRES_USER" bigsdb_refs
 psql -U "$POSTGRES_USER" -f $DCD/sql/refs.sql bigsdb_refs
 createdb -U "$POSTGRES_USER" bigsdb_jobs
 psql -U "$POSTGRES_USER" -f $DCD/sql/jobs.sql bigsdb_jobs
+createdb -U "$POSTGRES_USER" pubmlst_bigsdb_users
+psql -U "$POSTGRES_USER" -f $DCD/sql/users.sql pubmlst_bigsdb_users
 
 # reload postgres
 psql -U "$POSTGRES_USER" -c "SELECT pg_reload_conf()";
