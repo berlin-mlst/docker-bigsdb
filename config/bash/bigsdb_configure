@@ -32,6 +32,7 @@ useradd -s /bin/bash bigsdb
 
 # crontab
 echo -e "* * * * *\tbigsdb\txvfb-run -a /usr/local/bin/bigsjobs" >> /etc/crontab
+echo -e "05 * * * *\tbigsdb\t/usr/local/bin/sync_user_dbase_users.pl --user-database pubmlst_bigsdb_users" >> /etc/crontab
 
 # jobs logs
 touch /var/log/bigsdb_jobs.log

@@ -64,8 +64,8 @@ RUN tar -xvf v_1.18.3.tar.gz; \
 COPY config/bash/bigsdb_* /usr/bin/
 RUN chmod a+x /usr/bin/bigsdb_*
 
-# import bigsdb configuration files into /etc/bigsdb
-COPY config/bigsdb/conf/*.conf /etc/bigsdb/
+# import bigsdb configuration files and menu_header.html into /etc/bigsdb
+COPY config/bigsdb/conf/* /etc/bigsdb/
 
 # copy apache2 site-config (this config file is automatically enabled by bigsdb_configure below)
 COPY config/apache2/apache2_bigsdb.conf /etc/apache2/sites-available/
