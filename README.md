@@ -20,6 +20,7 @@ Then cd into directory 'docker-bigsdb' and type
     
 Docker will then download the images (berlinmlst/bigsdb and postgres) and start customization according to scripts in directory config.
 
-## TODO
+## Current TODOs
 
   * customization of menu_header.html
+  * integration of all perl scripts in subdirectory 'scripts'
