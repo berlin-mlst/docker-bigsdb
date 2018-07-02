@@ -18,7 +18,7 @@ services:
             - db
         volumes:
             - ./config:/config
-        image: bigsdb:01
+        image: berlinmlst/bigsdb:latest
         restart: always
         container_name: bigsdb_frontend
         environment:
