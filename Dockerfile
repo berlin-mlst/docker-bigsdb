@@ -43,22 +43,34 @@ RUN ./splitstree4_unix_4_14_6.sh < install.txt
 # install muscle
 #
 
-# download bigsdb 1.18.3, unpack, and copy files to appropriate locations
-RUN wget https://github.com/kjolley/BIGSdb/archive/v_1.18.3.tar.gz
-RUN tar -xvf v_1.18.3.tar.gz; \
+# arguments (to be moved to top)
+ARG BIGSDB_VERSION=1.18.3
+
+# download bigsdb, unpack, and copy files to appropriate locations
+RUN wget https://github.com/kjolley/BIGSdb/archive/v_$BIGSDB_VERSION.tar.gz
+RUN tar -xvf v_$BIGSDB_VERSION.tar.gz; \
    mkdir /var/www/cgi-bin; \
-   cp BIGSdb-v_1.18.3/bigsdb.pl /var/www/cgi-bin; \
-   cp BIGSdb-v_1.18.3/bigscurate.pl /var/www/cgi-bin; \
-   cp BIGSdb-v_1.18.3/bigsrest.pl /var/www/cgi-bin; \
-   cp BIGSdb-v_1.18.3/bigsjobs.pl /usr/local/bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/bigsdb.pl /var/www/cgi-bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/bigscurate.pl /var/www/cgi-bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/bigsrest.pl /var/www/cgi-bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/bigsjobs.pl /usr/local/bin; \
    ln -s /usr/local/bin/bigsjobs.pl /usr/local/bin/bigsjobs; \
-   cp -r BIGSdb-v_1.18.3/lib/BIGSdb /usr/local/lib/; \
-   cp -r BIGSdb-v_1.18.3/javascript /var/www/html/; \
-   cp -r BIGSdb-v_1.18.3/css /var/www/html/; \
-   cp -r BIGSdb-v_1.18.3/webfonts /var/www/html/; \
-   cp -r BIGSdb-v_1.18.3/images /var/www/html/; \
-   cp -r BIGSdb-v_1.18.3/conf /etc/; \
+   cp -r BIGSdb-v_$BIGSDB_VERSION/lib/BIGSdb /usr/local/lib/; \
+   cp -r BIGSdb-v_$BIGSDB_VERSION/javascript /var/www/html/; \
+   cp -r BIGSdb-v_$BIGSDB_VERSION/css /var/www/html/; \
+   cp -r BIGSdb-v_$BIGSDB_VERSION/webfonts /var/www/html/; \
+   cp -r BIGSdb-v_$BIGSDB_VERSION/images /var/www/html/; \
+   cp -r BIGSdb-v_$BIGSDB_VERSION/conf /etc/; \
    mv /etc/conf /etc/bigsdb
+
+# more copying of files (to be merged later)
+# TODO: import python module(s): rauth
+RUN cp BIGSdb-v_$BIGSDB_VERSION/scripts/automation/* /usr/local/bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/scripts/maintenance/* /usr/local/bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/scripts/monitoring/* /usr/local/bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/scripts/query/* /usr/local/bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/scripts/rest_examples/perl/* /usr/local/bin; \
+   cp BIGSdb-v_$BIGSDB_VERSION/scripts/rest_examples/python/* /usr/local/bin
 
 # import initialisation scripts
 COPY config/bash/bigsdb_* /usr/bin/
