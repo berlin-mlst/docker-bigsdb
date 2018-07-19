@@ -1,6 +1,12 @@
 # base
 FROM ubuntu:18.04
 
+# arguments and environment
+ARG BIGSDB_VERSION=1.18.4
+ARG DEBIAN_FRONTEND=noninteractive
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+
 # core
 RUN apt-get -y update && apt-get install -y \
    apache2 \
@@ -16,7 +22,9 @@ RUN apt-get -y update && apt-get install -y \
    ncbi-blast+ \
    nano \
    perl \
-   postgresql-client \
+   postgresql \
+   postgresql-contrib \
+   python-pip \
    wget \
    xvfb
 
@@ -41,10 +49,7 @@ RUN echo 'o\n1\n\n\n\n\n\n\n' > install.txt
 RUN ./splitstree4_unix_4_14_6.sh < install.txt
 
 # install muscle
-#
-
-# arguments (to be moved to top)
-ARG BIGSDB_VERSION=1.18.3
+# TODO
 
 # download bigsdb, unpack, and copy files to appropriate locations
 RUN wget https://github.com/kjolley/BIGSdb/archive/v_$BIGSDB_VERSION.tar.gz
@@ -77,6 +82,7 @@ COPY config/bash/bigsdb_* /usr/bin/
 RUN chmod a+x /usr/bin/bigsdb_*
 
 # import bigsdb configuration files and menu_header.html into /etc/bigsdb
+# TODO: move to bigsdb_configure
 COPY config/bigsdb/conf/* /etc/bigsdb/
 
 # copy apache2 site-config (this config file is automatically enabled by bigsdb_configure below)

@@ -1,20 +1,48 @@
 #!/bin/bash
 
 # save environment variables
-export BIGS_ENVIRONMENT=/setup/bigsdb.env
+export BIGSDB_ENVIRONMENT=/setup/bigsdb.env
 mkdir -p /setup/environment
-set | grep '^BIGS_\|^POSTGRES_' > ${BIGS_ENVIRONMENT} 
+set | grep '^BIGSDB_' > ${BIGSDB_ENVIRONMENT} 
 
 # create log file and set permissions
 touch /var/log/bigsdb.log
 chown www-data /var/log/bigsdb.log
 
-# set rights and permissions of directories
+# set rights and permissions of log and web directories
 chown www-data:www-data -R /var/www
 chmod a+w /var/log
 
+# import postgresql config
+cp /config/postgres/*.conf /etc/postgresql/10/main/
+
+# start postgresql (as user postgres)
+su postgres -c "/etc/init.d/postgresql start"
+
+# create postgresql users apache and bigsdb
+# TODO: remove $BIGSDB_POSTGRES_USER
+createuser -U "$BIGSDB_POSTGRES_USER" apache
+psql -U "$BIGSDB_POSTGRES_USER" -c "ALTER ROLE apache WITH PASSWORD '$BIGSDB_PG_APACHE_PASSWORD'";
+createuser -U "$BIGSDB_POSTGRES_USER" bigsdb
+psql -U "$BIGSDB_POSTGRES_USER" -c "ALTER ROLE bigsdb WITH PASSWORD '$BIGSDB_PG_BIGSDB_PASSWORD'";
+
+# create postgresql databases
+createdb -U "$BIGSDB_POSTGRES_USER" bigsdb_auth
+psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/auth.sql bigsdb_auth
+createdb -U "$BIGSDB_POSTGRES_USER" bigsdb_prefs
+psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/prefs.sql bigsdb_prefs
+createdb -U "$BIGSDB_POSTGRES_USER" bigsdb_refs
+psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/refs.sql bigsdb_refs
+createdb -U "$BIGSDB_POSTGRES_USER" bigsdb_jobs
+psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/jobs.sql bigsdb_jobs
+createdb -U "$BIGSDB_POSTGRES_USER" "$BIGSDB_USER_DATABASE"
+psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/users.sql "$BIGSDB_USER_DATABASE"
+
+# add postgresql admin user for bigsdb
+psql -U "$BIGSDB_POSTGRES_USER" -c "INSERT INTO USERS (user_name,surname,first_name,email,affiliation,date_entered,datestamp,status) VALUES ('$BIGSDB_ADMIN_LOGIN','$BIGSDB_ADMIN_SNAME','$BIGSDB_ADMIN_FNAME','$BIGSDB_ADMIN_EMAIL','$BIGSDB_ADMIN_AFFILIATION','now','now','validated')" "$BIGSDB_USER_DATABASE"
+
 # apache config: disable default site configs
-# a2dissite 000-default # <- this line is necessary, if 000-default.conf is not present in /etc/apache2/sites-available/
+# a2dissite 000-default # <- this line is only necessary, if 000-default.conf is not present in /etc/apache2/sites-available/
 # other defaults
 for i in $(ls /etc/apache2/sites-available/*default*); do
    default_confx=$(basename $i)
@@ -27,20 +55,18 @@ for i in $(ls /etc/apache2/sites-available/ -I "*default*"); do
    a2ensite ${site_confx%.conf}
 done
 
-# ToDo: create user bigsdb
+# create user bigsdb, adjust user rights of www-data, bigsdb
 useradd -s /bin/bash bigsdb
-
-# crontab
-echo -e "* * * * *\tbigsdb\txvfb-run -a /usr/local/bin/bigsjobs" >> /etc/crontab
-echo -e "05 * * * *\tbigsdb\t/usr/local/bin/sync_user_dbase_users.pl --user-database pubmlst_bigsdb_users" >> /etc/crontab
-
-# jobs logs
-touch /var/log/bigsdb_jobs.log
-chown bigsdb /var/log/bigsdb_jobs.log
-
-# modify users
 usermod -a -G www-data bigsdb
 usermod -a -G bigsdb www-data
+
+# set up crontab jobs
+echo -e "* * * * *\tbigsdb\txvfb-run -a /usr/local/bin/bigsjobs" >> /etc/crontab
+echo -e "05 * * * *\tbigsdb\t/usr/local/bin/sync_user_dbase_users.pl --user-database $BIGSDB_USER_DATABASE" >> /etc/crontab
+
+# create bigsdb jobs logfile
+touch /var/log/bigsdb_jobs.log
+chown bigsdb /var/log/bigsdb_jobs.log
 
 # submissions
 touch /var/submissions
@@ -51,5 +77,7 @@ ln -s /var/submissions /var/www
 # apache2: enable cgi
 a2enmod cgi
 
-# start apache2 (as bigsdb)?
+# start apache2 
 apache2ctl -DFOREGROUND
+
+

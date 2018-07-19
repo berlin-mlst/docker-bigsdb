@@ -1,31 +1,24 @@
 version: '3'
 
 services:
-    db: 
-        image: postgres:10.4
-        volumes:
-            - ./config/postgres:/docker-entrypoint-initdb.d
-        restart: always
-        container_name: bigsdb_backend
-        environment:
-            - POSTGRES_USER
-            - POSTGRES_PASSWORD
-            - BIGS_PG_APACHE_PASSWORD
-            - BIGS_PG_BIGSDB_PASSWORD
-
     bigs:
-        depends_on:
-            - db
         volumes:
             - ./config:/config
         image: berlinmlst/bigsdb:latest
         restart: always
-        container_name: bigsdb_frontend
+        container_name: bigsdb
         environment:
-            - POSTGRES_USER
-            - POSTGRES_PASSWORD
-            - BIGS_PG_APACHE_PASSWORD
-            - BIGS_PG_BIGSDB_PASSWORD
+            - BIGSDB_POSTGRES_USER
+            - BIGSDB_POSTGRES_PASSWORD
+            - BIGSDB_PG_ABPACHE_PASSWORD
+            - BIGSDB_PG_BIGSDB_PASSWORD
+            - BIGSDB_USER_DATABASE
+            - BIGSDB_ADMIN_LOGIN
+            - BIGSDB_ADMIN_SNAME
+            - BIGSDB_ADMIN_FNAME
+            - BIGSDB_ADMIN_EMAIL
+            - BIGSDB_ADMIN_AFFILIATION
+            - BIGSDB_ADMIN_PASSWORD
         ports:
             - "80:80"
 
