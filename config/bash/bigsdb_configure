@@ -38,8 +38,9 @@ psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/jobs.sql bigsdb_jobs
 createdb -U "$BIGSDB_POSTGRES_USER" "$BIGSDB_USER_DATABASE"
 psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/users.sql "$BIGSDB_USER_DATABASE"
 
-# add postgresql admin user for bigsdb
+# add postgresql admin user for bigsdb and set password
 psql -U "$BIGSDB_POSTGRES_USER" -c "INSERT INTO USERS (user_name,surname,first_name,email,affiliation,date_entered,datestamp,status) VALUES ('$BIGSDB_ADMIN_LOGIN','$BIGSDB_ADMIN_SNAME','$BIGSDB_ADMIN_FNAME','$BIGSDB_ADMIN_EMAIL','$BIGSDB_ADMIN_AFFILIATION','now','now','validated')" "$BIGSDB_USER_DATABASE"
+add_user.pl -a -d "$BIGSDB_USER_DATABASE" -n "$BIGSDB_ADMIN_LOGIN" -p "$BIGSDB_ADMIN_PASSWORD"
 
 # apache config: disable default site configs
 # a2dissite 000-default # <- this line is only necessary, if 000-default.conf is not present in /etc/apache2/sites-available/
