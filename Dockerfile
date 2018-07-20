@@ -41,7 +41,7 @@ RUN wget https://www.drive5.com/muscle/downloads3.8.31/muscle3.8.31_i86linux64.t
 RUN wget http://ab.inf.uni-tuebingen.de/data/software/splitstree4/download/splitstree4_unix_4_14_6.sh
 
 # install perl modules
-RUN perl -MCPAN -e 'install(Archive::Zip,Bio::Biblio,CGI,Config::Tiny,Crypt::Eksblowfish::Bcrypt,Data::UUID,DBD-Pg,DBI,Email::MIME,Email::Sender,Email::Valid,Error,Excel::Writer::XLSX,IO::String,JSON,List::MoreUtils,Log::Dispatch::File,Log::Log4perl,LWP::UserAgent,Net::Oauth,Parallel::ForkManager,Time::Duration,XML::Parser::perlSAX,Net::OAuth,Data::Random)'
+RUN perl -MCPAN -e 'install(Archive::Zip,Bio::Biblio,CGI,Config::Tiny,Crypt::Eksblowfish::Bcrypt,Data::UUID,DBD-Pg,DBI,Email::MIME,Email::Sender,Email::Valid,Error,Excel::Writer::XLSX,IO::String,JSON,List::MoreUtils,Log::Dispatch::File,Log::Log4perl,LWP::UserAgent,Net::Oauth,Parallel::ForkManager,Time::Duration,XML::Parser::perlSAX,Net::OAuth,Data::Random,Plack)'
 
 # install splitstree
 RUN chmod u+x splitstree4_unix_4_14_6.sh
