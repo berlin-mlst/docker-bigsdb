@@ -2,7 +2,9 @@
 
 This is an attempt to dockerize BIGSdb, in accordance with the [installation manual](https://bigsdb.readthedocs.io/en/latest/) by Keith Jolley.
 
-The Dockerfile presented is referenced by an image at [docker hub](https://hub.docker.com/r/berlinmlst/bigsdb/). Please note that BIGSdb is **not yet fully functional** in the image described by the Dockerfile in this repository!
+The Dockerfile presented is referenced by an image at [docker hub](https://hub.docker.com/r/berlinmlst/bigsdb/). 
+
+**Please note that BIGSdb is not yet fully functional in the image described by the Dockerfile in this repository.** See our [current TODOs](#current-todos) below.
 
 ## Prerequisites
 
@@ -18,9 +20,9 @@ Then, cd into directory `docker-bigsdb` and type
 
     docker-compose up -d
     
-Docker will then download the images (`berlinmlst/bigsdb` and `postgres`) and start customization according to scripts in directory `config`.
+Docker will then download the images (`berlinmlst/bigsdb`) and start customization according to scripts in directory `config`.
 
 ## Current TODOs
 
-  * customization of `menu_header.html`
-  * integration of all perl scripts in subdirectory `scripts`
+  * start sequence definition and isolate databases from template (chapter 4 of [installation manual](https://bigsdb.readthedocs.io/en/latest/))
+  * run BIGSdb RESTful interface (chapter 3.13)

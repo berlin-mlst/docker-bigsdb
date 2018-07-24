@@ -1,0 +1,19 @@
+/var/log/bigsdb.log {
+weekly
+rotate 4
+compress
+copytruncate
+missingok
+notifempty
+create 640 root adm
+}
+
+/var/log/bigsdb_jobs.log {
+weekly
+rotate 4
+compress
+copytruncate
+missingok
+notifempty
+create 640 root adm
+}

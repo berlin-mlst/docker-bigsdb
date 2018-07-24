@@ -1,0 +1,10 @@
+#/bin/bash
+
+#Remove temp BIGSdb files from secure tmp folder older than 1 week.
+find /var/tmp/ -name '*BIGSdb_*' -type f -mmin +10080 -exec rm -f {} \; 2>/dev/null
+
+#Remove .jnlp files from web tree older than 1 day
+find /var/www/tmp/ -name '*.jnlp' -type f -mmin +1440 -exec rm -f {} \; 2>/dev/null
+
+#Remove other tmp files from web tree older than 1 week
+find /var/www/tmp/ -type f -mmin +10080 -exec rm -f {} \; 2>/dev/null
