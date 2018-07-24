@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<db>
+<system
+ db="test_seqdef"
+ dbtype="sequences"
+ webroot=""
+ curator_home="/private"
+ indexpage=""
+ description="Locus/sequence definitions"
+ locus_superscript_prefix="yes"
+ authentication="builtin"
+ read_access="public"
+ disable_seq_downloads="no"
+>
+</system>
+</db>

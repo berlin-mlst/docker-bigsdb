@@ -22,7 +22,21 @@ Then, cd into directory `docker-bigsdb` and type
     
 Docker will then download the images (`berlinmlst/bigsdb`) and start customization according to scripts in directory `config`.
 
+## Configuration
+
+The directory `config` contains various configuration files pertaining to BIGSdb (e.g. database configuration files), Apache2, and PostgreSQL. 
+
+## Present status
+
+The image is not yet fully functional. 
+
+Presently, you can only do the following:
+
+  * open the bigsdb main page under http://localhost/cgi-bin/bigsdb.pl
+  * open the test isolate database under http://localhost/cgi-bin/bigsdb.pl?db=test_isolates
+  * open the test seqdef database under http://localhost/cgi-bin/bigsdb.pl?db=test_seqdef
+
 ## Current TODOs
 
-  * start sequence definition and isolate databases from template (chapter 4 of [installation manual](https://bigsdb.readthedocs.io/en/latest/))
+  * customize sequence definition and isolate databases from template (chapter 4 of [installation manual](https://bigsdb.readthedocs.io/en/latest/))
   * run BIGSdb RESTful interface (chapter 3.13)
