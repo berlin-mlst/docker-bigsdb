@@ -20,7 +20,7 @@ Then, cd into directory `docker-bigsdb` and type
 
     docker-compose up -d
     
-Docker will then download the images (`berlinmlst/bigsdb`) and start customization according to scripts in directory `config`.
+Docker will then download the image (`berlinmlst/bigsdb`) and start customization according to scripts in directory `config`.
 
 ## Configuration
 
