@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 #Remove temp BIGSdb files from secure tmp folder older than 1 week.
 find /var/tmp/ -name '*BIGSdb_*' -type f -mmin +10080 -exec rm -f {} \; 2>/dev/null
