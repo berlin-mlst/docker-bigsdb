@@ -13,6 +13,7 @@ services:
             - BIGSDB_PG_ABPACHE_PASSWORD
             - BIGSDB_PG_BIGSDB_PASSWORD
             - BIGSDB_USER_DATABASE
+            - BIGSDB_USER_DATABASE_DISPLAYNAME
             - BIGSDB_ADMIN_LOGIN
             - BIGSDB_ADMIN_SNAME
             - BIGSDB_ADMIN_FNAME
