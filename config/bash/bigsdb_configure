@@ -14,10 +14,9 @@ useradd -s /bin/bash bigsdb
 usermod -a -G www-data bigsdb
 usermod -a -G bigsdb www-data
 
-## FILE IMPORT
+## BIGSDB CONFIGURATION
 
 # import miscellaneous files from /config
-cp /config/postgres/*.conf /etc/postgresql/10/main/
 cp /config/bigsdb/logrotate.d/* /etc/logrotate.d/
 cp /config/bigsdb/cron/cron.hourly/* /etc/cron.hourly/
 cp /config/bigsdb/conf/* /etc/bigsdb/
@@ -31,6 +30,9 @@ cp -R /config/bigsdb/dbases/* /etc/bigsdb/dbases/
 chown -R bigsdb:bigsdb /etc/bigsdb/dbases
 
 ## POSTGRESQL CONFIGURATION
+
+# import config files
+cp /config/postgres/*.conf /etc/postgresql/10/main/
 
 # start postgresql (as user postgres)
 su postgres -c "/etc/init.d/postgresql start"
@@ -56,12 +58,12 @@ psql -U "$BIGSDB_POSTGRES_USER" -f /config/bigsdb/sql/users.sql "$BIGSDB_USER_DA
 
 # add postgresql admin user for bigsdb, set password and permissions
 # TODO: make permissions depend on environment variables?
-add_user.pl -d "$BIGSDB_USER_DATABASE" -n "$BIGSDB_ADMIN_LOGIN" -p "$BIGSDB_ADMIN_PASSWORD"
 psql -U "$BIGSDB_POSTGRES_USER" -c "INSERT INTO USERS (user_name,surname,first_name,email,affiliation,date_entered,datestamp,status) VALUES ('$BIGSDB_ADMIN_LOGIN','$BIGSDB_ADMIN_SNAME','$BIGSDB_ADMIN_FNAME','$BIGSDB_ADMIN_EMAIL','$BIGSDB_ADMIN_AFFILIATION','now','now','validated')" "$BIGSDB_USER_DATABASE"
 psql -U "$BIGSDB_POSTGRES_USER" -c "INSERT INTO permissions (user_name,permission,curator,datestamp) VALUES ('$BIGSDB_ADMIN_LOGIN','set_site_user_passwords','$BIGSDB_ADMIN_LOGIN','now')" "$BIGSDB_USER_DATABASE"
 psql -U "$BIGSDB_POSTGRES_USER" -c "INSERT INTO permissions (user_name,permission,curator,datestamp) VALUES ('$BIGSDB_ADMIN_LOGIN','import_dbase_configs','$BIGSDB_ADMIN_LOGIN','now')" "$BIGSDB_USER_DATABASE"
 psql -U "$BIGSDB_POSTGRES_USER" -c "INSERT INTO permissions (user_name,permission,curator,datestamp) VALUES ('$BIGSDB_ADMIN_LOGIN','merge_users','$BIGSDB_ADMIN_LOGIN','now')" "$BIGSDB_USER_DATABASE"
 psql -U "$BIGSDB_POSTGRES_USER" -c "INSERT INTO permissions (user_name,permission,curator,datestamp) VALUES ('$BIGSDB_ADMIN_LOGIN','modify_users','$BIGSDB_ADMIN_LOGIN','now')" "$BIGSDB_USER_DATABASE"
+add_user.pl -a -d "$BIGSDB_USER_DATABASE" -n "$BIGSDB_ADMIN_LOGIN" -p "$BIGSDB_ADMIN_PASSWORD"
 
 # test databases
 # TODO: have databases created depending on content of dbases
@@ -89,6 +91,10 @@ ln -s /var/submissions /var/www
 
 ## APACHE2 CONFIGURATION
 
+# import config files
+# copy apache2 site-config (this config file is automatically enabled by bigsdb_configure below)
+cp /config/apache2/apache2_bigsdb.conf /etc/apache2/sites-available/
+cp /config/apache2/apache2.conf /etc/apache2/
 # apache config: disable default site config
 # a2dissite 000-default # <- this line is only necessary, if 000-default.conf is not present in /etc/apache2/sites-available/
 # other defaults

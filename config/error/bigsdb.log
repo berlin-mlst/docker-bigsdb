@@ -1,0 +1,6 @@
+2018/07/28 13:06:19 [ERROR] 172.18.0.1 Dataconnector.pm:103  - Cannot connect to database 'bigsdb_auth' (localhost). DBI connect('host=localhost;port=5432;dbname=bigsdb_auth','apache',...) failed: FATAL:  Ident authentication failed for user "apache"
+FATAL:  Ident authentication failed for user "apache" at /usr/local/lib/BIGSdb/Dataconnector.pm line 98.
+2018/07/28 13:06:19 [ERROR] 172.18.0.1 BaseApplication.pm:303  - Cannot connect to authentication database 'bigsdb_auth'
+2018/07/28 13:06:19 [ERROR] 172.18.0.1 Dataconnector.pm:103  - Cannot connect to database 'berlin_mlst_users' (localhost). DBI connect('host=localhost;port=5432;dbname=berlin_mlst_users','apache',...) failed: FATAL:  Ident authentication failed for user "apache"
+FATAL:  Ident authentication failed for user "apache" at /usr/local/lib/BIGSdb/Dataconnector.pm line 98.
+2018/07/28 13:06:19 [ERROR] 172.18.0.1 BaseApplication.pm:502  - Cannot connect to database 'berlin_mlst_users'

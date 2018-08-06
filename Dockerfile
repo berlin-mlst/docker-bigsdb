@@ -81,13 +81,6 @@ RUN cp BIGSdb-v_$BIGSDB_VERSION/scripts/automation/* /usr/local/bin; \
 COPY config/bash/bigsdb_* /usr/bin/
 RUN chmod a+x /usr/bin/bigsdb_*
 
-# import bigsdb configuration files and menu_header.html into /etc/bigsdb
-# TODO: move to bigsdb_configure
-COPY config/bigsdb/conf/* /etc/bigsdb/
-
-# copy apache2 site-config (this config file is automatically enabled by bigsdb_configure below)
-COPY config/apache2/apache2_bigsdb.conf /etc/apache2/sites-available/
-
 # Initialise container and start apache2
 CMD ["bigsdb_configure"]
 
