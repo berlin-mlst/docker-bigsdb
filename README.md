@@ -22,6 +22,7 @@ The Dockerfile presented is referenced by an image at [docker hub](https://hub.d
 - [x] Create test isolate and seqdef databases
 - [ ] Setting up user authentication
 - [ ] Add custom html files
+- [ ] Create documentation
 
 ## Prerequisites
 
